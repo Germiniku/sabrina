@@ -7,7 +7,7 @@ from scheduler import Scheduler
 import signal
 import asyncio
 
-from sabrina.fetcher.futures import top_long_short_position_ratio
+from sabrina.fetcher.futures import top_long_short_position_ratio, top_long_short_account_ratio
 from sabrina.fetcher.kline import KlineWs
 
 app = typer.Typer()
@@ -33,6 +33,7 @@ def cron():
     signal.signal(signal.SIGTERM, signal_handler)
     scheduler = Scheduler()
     scheduler.cyclic(timedelta(minutes=5), top_long_short_position_ratio)
+    scheduler.cyclic(timedelta(minutes=5), top_long_short_account_ratio)
     while True:
         scheduler.exec_jobs()
         time.sleep(1)
